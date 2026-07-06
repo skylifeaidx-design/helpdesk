@@ -730,7 +730,7 @@
       renderCategoryForm();
       
       try {
-        const response = await fetch('/helpdesk_dashboard/reports_list.json');
+        const response = await fetch('reports_list.json');
         reportsList = await response.json();
         
         // 정렬
@@ -760,7 +760,7 @@
       if (!rep) return;
 
       // Iframe 매핑
-      const reportUrl = '/helpdesk_dashboard/reports/' + filename + '?t=' + new Date().getTime();
+      const reportUrl = 'reports/' + filename + '?t=' + new Date().getTime();
       document.getElementById('reportViewer').src = reportUrl;
       document.getElementById('downloadLink').href = reportUrl;
       document.getElementById('viewerTitle').textContent = rep.title + ' 세부 보고서';
