@@ -1,0 +1,1217 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KT Skylife Help Desk Insights Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&family=Pretendard:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #05c228; /* DESIGN.md 명세 그린 포인트 */
+      --primary-hover: #04a520;
+      --primary-light: #f4fcf5;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 8px; /* DESIGN.md ROUND_EIGHT */
+      --danger: #ef4444;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* 헤더 영역 */
+    .header {
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), #10b981);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-family: 'Manrope', sans-serif;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(5, 194, 40, 0.3);
+    }
+
+    .brand-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-title span {
+      color: var(--primary);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    select {
+      appearance: none;
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 36px 10px 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 250px;
+    }
+
+    select:hover {
+      border-color: var(--primary);
+      background-color: var(--primary-light);
+    }
+
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(5, 194, 40, 0.12);
+    }
+
+    .select-wrapper::after {
+      content: "▼";
+      font-size: 10px;
+      color: var(--text-muted);
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    /* 컨테이너 레이아웃 */
+    .container {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* KPI 요약 대시보드 */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 2.5fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-title svg {
+      color: var(--primary);
+    }
+
+    .card-value {
+      font-family: 'Manrope', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+
+    .card-value span {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    /* 포털 메인 대시보드 3단 레이아웃 */
+    .dashboard-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .dashboard-top-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-top-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .dashboard-bottom-row {
+      width: 100%;
+    }
+
+    /* 개선 활동 비교 보드 */
+    .comparison-board {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-container {
+      display: flex;
+      gap: 6px;
+      background-color: #f1f5f9;
+      padding: 4px;
+      border-radius: var(--radius);
+      width: fit-content;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+      background-color: #e2e8f0;
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    /* 개선 활동 리스트 선택 */
+    .milestone-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .milestone-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      background-color: #fafbfc;
+    }
+
+    .milestone-item:hover {
+      border-color: var(--primary);
+      background-color: var(--primary-light);
+    }
+
+    .milestone-item.active {
+      border-color: var(--primary);
+      background-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(5, 194, 40, 0.2);
+    }
+
+    .milestone-item-name {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .milestone-item-date {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* 전후 지표 카드 */
+    .effect-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .effect-kpi-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      text-align: center;
+      background: #fafafa;
+    }
+
+    .effect-kpi-card-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .effect-kpi-card-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .effect-kpi-card-value.down {
+      color: var(--danger);
+    }
+
+    .effect-kpi-card-value.up {
+      color: var(--primary);
+    }
+
+    /* 관리자 폼 */
+    .collapse-header {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .collapse-content {
+      display: none;
+      margin-top: 15px;
+      border-top: 1px solid var(--border);
+      padding-top: 15px;
+    }
+
+    .collapse-content.show {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .form-control {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(5, 194, 40, 0.12);
+    }
+
+    /* 카테고리 체크박스 목록 */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      max-height: 140px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px;
+      background-color: #fafbfc;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .checkbox-label input {
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+
+    .btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      padding: 8px 16px;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 4px 12px rgba(5, 194, 40, 0.2);
+    }
+
+    .btn-danger {
+      background-color: #fee2e2;
+      color: #ef4444;
+    }
+
+    .btn-danger:hover {
+      background-color: #fca5a5;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    }
+
+    /* 테이블 스타일 */
+    .m-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      margin-top: 10px;
+    }
+
+    .m-table th, .m-table td {
+      border-bottom: 1px solid var(--border);
+      padding: 8px;
+      text-align: left;
+    }
+
+    .m-table th {
+      background-color: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 800;
+    }
+
+    /* 리포트 뷰어 카드 */
+    .viewer-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 1600px;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .viewer-header {
+      background-color: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top-left-radius: var(--radius);
+      border-top-right-radius: var(--radius);
+    }
+
+    .viewer-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .viewer-iframe-wrapper {
+      flex: 1;
+      position: relative;
+      height: 100%;
+    }
+
+    iframe {
+      width: 100%;
+      height: 1550px;
+      border: none;
+      display: block;
+    }
+
+    /* 푸터 */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background-color: var(--card-bg);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="brand">
+      <div class="brand-logo">S</div>
+      <h1 class="brand-title">Help Desk <span>Insights Hub</span></h1>
+    </div>
+    <div class="controls">
+      <span style="font-size:13.5px; font-weight:800; color:var(--text-muted);">보고서 선택:</span>
+      <div class="select-wrapper">
+        <select id="reportSelector" onchange="switchReport(this.value)">
+          <!-- Dynamic Options -->
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- 상단 KPI 현황판 -->
+    <section class="kpi-grid">
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          누적 상담 분석 건수
+        </div>
+        <div class="card-value" id="totalRowCount" style="margin-top:10px;">-<span>건</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          홈페이지 개선 활동 배포 효과 현황 (최근 3개 마일스톤)
+        </div>
+        <div class="effect-kpi-grid" id="milestoneMiniTrackers">
+          <!-- Dynamic Mini Trackers -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 대시보드 3단 레이아웃 -->
+    <section class="dashboard-layout">
+      <!-- 1. 상단 레이어: 전후비교기 (50%) + 개선 활동 관리 패널 (50%) -->
+      <div class="dashboard-top-row">
+        <!-- 1.1 비교 연산 패널 -->
+        <div class="card">
+          <div class="card-header-flex">
+            <h2 class="card-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              홈페이지 개선 전후 비교 분석기
+            </h2>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+              <div class="tab-container">
+                <button class="tab-btn" id="btnDur15" onclick="changeDuration(15)">15일</button>
+                <button class="tab-btn active" id="btnDur30" onclick="changeDuration(30)">30일</button>
+                <button class="tab-btn" id="btnDur45" onclick="changeDuration(45)">45일</button>
+                <button class="tab-btn" id="btnDur60" onclick="changeDuration(60)">60일</button>
+                <button class="tab-btn" id="btnDurCustom" onclick="enableCustomRange()">달력선택</button>
+              </div>
+              <div id="customRangePicker" style="display: none; align-items: center; gap: 4px; font-size: 11px;">
+                <input type="date" id="customStartDate" onchange="changeCustomRange()" style="padding: 2px 5px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; outline: none; font-family: inherit;">
+                <span style="color:var(--text-muted);">~</span>
+                <input type="date" id="customEndDate" onchange="changeCustomRange()" style="padding: 2px 5px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; outline: none; font-family: inherit;">
+              </div>
+            </div>
+          </div>
+          
+          <!-- 개선활동 선택 버튼들 -->
+          <div class="milestone-selector" id="milestoneBtns">
+            <!-- Dynamic Buttons -->
+          </div>
+
+          <!-- 연산 결과 정보판 -->
+          <div class="effect-kpi-grid" style="margin-top: 15px;">
+            <div class="effect-kpi-card">
+              <span class="effect-kpi-card-label">배포 전 상담량</span>
+              <span class="effect-kpi-card-value" id="calcBeforeVal">-건</span>
+            </div>
+            <div class="effect-kpi-card">
+              <span class="effect-kpi-card-label">배포 후 상담량</span>
+              <span class="effect-kpi-card-value" id="calcAfterVal">-건</span>
+            </div>
+            <div class="effect-kpi-card" style="background-color: var(--primary-light);">
+              <span class="effect-kpi-card-label">상담량 변화율</span>
+              <span class="effect-kpi-card-value down" id="calcPctVal">-0.0%</span>
+            </div>
+          </div>
+
+          <!-- SVG 비교 꺾은선 차트 -->
+          <div id="calcTrendChart" style="margin-top: 15px; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; background-color: #fafbfc;">
+            <!-- Dynamic SVG -->
+          </div>
+        </div>
+
+        <!-- 1.2 개선 활동 관리자 패널 (Collapsible) -->
+        <div class="card">
+          <div class="collapse-header" onclick="toggleForm()">
+            <h2 class="card-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+              개선 활동 관리 패널
+            </h2>
+            <span id="collapseArrow" style="font-size:12px; color:var(--text-muted);">펼치기 ▼</span>
+          </div>
+          
+          <div class="collapse-content" id="formContent">
+            <!-- 추가 폼 -->
+            <form id="milestoneForm" onsubmit="addMilestone(event)">
+              <div class="form-group">
+                <label for="msLabel">개선 활동명</label>
+                <input type="text" id="msLabel" class="form-control" required placeholder="예: 요금 대시보드 개편">
+              </div>
+              <div class="form-group">
+                <label for="msDate">배포일 (오픈일)</label>
+                <input type="date" id="msDate" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>대상 상담유형 선택 (다중 선택)</label>
+                <div class="category-grid" id="categoryGrid">
+                  <!-- Dynamic Categories -->
+                </div>
+              </div>
+              <button type="submit" class="btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                활동 등록
+              </button>
+            </form>
+
+            <!-- 목록 테이블 -->
+            <table class="m-table" style="margin-top: 15px;">
+              <thead>
+                <tr>
+                  <th>활동명</th>
+                  <th>배포일</th>
+                  <th>대상 카테고리</th>
+                  <th style="width: 50px;">동작</th>
+                </tr>
+              </thead>
+              <tbody id="milestoneTableBody">
+                <!-- Dynamic Rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 하단 레이어: 와이드 상세 보고서 뷰어 (100% 가로 와이드) -->
+      <div class="dashboard-bottom-row">
+        <div class="card viewer-card">
+          <div class="viewer-header">
+            <div class="viewer-title" id="viewerTitle">선택된 보고서</div>
+            <a id="downloadLink" href="#" target="_blank" style="font-size:12.5px; font-weight:800; color:var(--primary); text-decoration:none; display:flex; align-items:center; gap:4px; transition: color 0.2s ease;">
+              새 창으로 보고서 열기 ↗
+            </a>
+          </div>
+          <div class="viewer-iframe-wrapper">
+            <iframe id="reportViewer" src="" scrolling="no"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    © 2026 KT Skylife DX Team. Designed by AI 디자인실장 영자 🎨✨
+  </footer>
+
+  <script>
+    let reportsList = [];
+    let activeStats = null;
+    let milestones = [];
+    let currentMilestoneId = null;
+    let currentDuration = 30;
+    let isCustomMode = false;
+
+    // 분류 엔진에서 분석하는 주요 중분류/소분류 목록 (체크박스용)
+    const categoryOptions = [
+      { name: "요금/청구내역 확인", type: "소분류" },
+      { name: "납부방법 변경", type: "소분류" },
+      { name: "서비스 해지 요청", type: "소분류" },
+      { name: "해지 위약금/약정 확인", type: "소분류" },
+      { name: "가입취소/청약철회", type: "소분류" },
+      { name: "설치 일정/기사 연락", type: "소분류" },
+      { name: "AS 방문/수리 요청", type: "소분류" },
+      { name: "단순 상품/가능여부 문의", type: "소분류" },
+      { name: "모바일 통화/문자/데이터 장애", type: "소분류" },
+      { name: "인터넷 품질/속도 장애", type: "소분류" },
+      { name: "TV 품질/채널/셋톱 장애", type: "소분류" },
+      { name: "미납/연체 조회", type: "소분류" },
+      { name: "가입정보 미조회", type: "소분류" }, // 사용자 요청 추가
+      { name: "AS/장애", type: "중분류" },
+      { name: "요금/납부", type: "중분류" },
+      { name: "가입/해지", type: "중분류" },
+      { name: "설치/이전", type: "중분류" }
+    ];
+
+    // 날짜 포맷 함수
+    function formatDate(date) {
+      return date.toISOString().split('T')[0];
+    }
+
+    // 초기화
+    async function init() {
+      loadMilestones();
+      renderCategoryForm();
+      
+      try {
+        const response = await fetch('/helpdesk_dashboard/reports_list.json');
+        reportsList = await response.json();
+        
+        // 정렬
+        reportsList.sort((a, b) => b.date.localeCompare(a.date));
+        
+        const selector = document.getElementById('reportSelector');
+        selector.innerHTML = '';
+        
+        reportsList.forEach(rep => {
+          const opt = document.createElement('option');
+          opt.value = rep.filename;
+          opt.textContent = `${rep.title} (${rep.date})`;
+          selector.appendChild(opt);
+        });
+
+        if (reportsList.length > 0) {
+          await switchReport(reportsList[0].filename);
+        }
+      } catch (err) {
+        console.error('보고서 메타데이터 로드 실패:', err);
+      }
+    }
+
+    // 보고서 변경 로드
+    async function switchReport(filename) {
+      const rep = reportsList.find(r => r.filename === filename);
+      if (!rep) return;
+
+      // Iframe 매핑
+      const reportUrl = '/helpdesk_dashboard/reports/' + filename + '?t=' + new Date().getTime();
+      document.getElementById('reportViewer').src = reportUrl;
+      document.getElementById('downloadLink').href = reportUrl;
+      document.getElementById('viewerTitle').textContent = rep.title + ' 세부 보고서';
+
+      // KPI 정보 업데이트
+      document.getElementById('totalRowCount').innerHTML = rep.row_count.toLocaleString() + '<span>건</span>';
+
+      // JSON 데이터 동적 fetch
+      const jsonUrl = reportUrl.replace('.html', '.json');
+      try {
+        const res = await fetch(jsonUrl);
+        activeStats = await res.json();
+        
+        // 전후 비교 갱신
+        updateComparison();
+        updateMilestoneMiniTrackers();
+      } catch (e) {
+        console.error('통계 JSON 로드 실패:', e);
+        activeStats = null;
+      }
+    }
+
+    // 개선 활동 관리 (localStorage)
+    function loadMilestones() {
+      const stored = localStorage.getItem('helpdesk_milestones_v2');
+      if (stored) {
+        milestones = JSON.parse(stored);
+      } else {
+        // 기본 3개 삽입
+        milestones = [
+          {
+            id: "ms_1",
+            date: "2026-04-01",
+            label: "요금 대시보드 개편 배포",
+            target_categories: ["요금/청구내역 확인", "납부방법 변경"]
+          },
+          {
+            id: "ms_2",
+            date: "2026-05-15",
+            label: "해지 셀프서비스 오픈",
+            target_categories: ["서비스 해지 요청", "해지 위약금/약정 확인", "가입취소/청약철회"]
+          },
+          {
+            id: "ms_3",
+            date: "2026-06-01",
+            label: "설치/AS 실시간 추적 배포",
+            target_categories: ["설치 일정/기사 연락", "AS 방문/수리 요청"]
+          }
+        ];
+        saveMilestones();
+      }
+      
+      if (milestones.length > 0 && !currentMilestoneId) {
+        currentMilestoneId = milestones[0].id;
+      }
+      
+      renderMilestones();
+    }
+
+    function saveMilestones() {
+      localStorage.setItem('helpdesk_milestones_v2', JSON.stringify(milestones));
+    }
+
+    function renderCategoryForm() {
+      const container = document.getElementById('categoryGrid');
+      container.innerHTML = '';
+      categoryOptions.forEach((opt, idx) => {
+        const lbl = document.createElement('label');
+        lbl.className = 'checkbox-label';
+        lbl.innerHTML = `
+          <input type="checkbox" name="categories" value="${opt.name}">
+          <span>${opt.name} (${opt.type})</span>
+        `;
+        container.appendChild(lbl);
+      });
+    }
+
+    function renderMilestones() {
+      // 1. 테이블 렌더링
+      const tbody = document.getElementById('milestoneTableBody');
+      tbody.innerHTML = '';
+      milestones.forEach(m => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><b>${m.label}</b></td>
+          <td>${m.date}</td>
+          <td><span style="font-size:10px; color:var(--text-muted);">${m.target_categories.join(', ')}</span></td>
+          <td>
+            <button class="btn btn-danger" onclick="deleteMilestone('${m.id}')" style="padding:4px 8px; font-size:10px;">삭제</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // 2. 비교 분석기 라디오/버튼 리스트 렌더링
+      const btnGrid = document.getElementById('milestoneBtns');
+      btnGrid.innerHTML = '';
+      milestones.forEach(m => {
+        const item = document.createElement('div');
+        item.className = `milestone-item ${m.id === currentMilestoneId ? 'active' : ''}`;
+        item.onclick = () => selectMilestone(m.id);
+        item.innerHTML = `
+          <span class="milestone-item-name">${m.label}</span>
+          <span class="milestone-item-date">${m.date}</span>
+        `;
+        btnGrid.appendChild(item);
+      });
+    }
+
+    function selectMilestone(id) {
+      currentMilestoneId = id;
+      renderMilestones();
+      
+      if (isCustomMode) {
+        const milestone = milestones.find(m => m.id === id);
+        if (milestone) {
+          const dDay = new Date(milestone.date);
+          const startD = new Date(dDay);
+          startD.setDate(dDay.getDate() - 30);
+          const endD = new Date(dDay);
+          endD.setDate(dDay.getDate() + 29);
+          
+          document.getElementById('customStartDate').value = formatDate(startD);
+          document.getElementById('customEndDate').value = formatDate(endD);
+        }
+      }
+      
+      updateComparison();
+    }
+
+    // 비교 일수 변경
+    function changeDuration(days) {
+      isCustomMode = false;
+      currentDuration = days;
+      
+      document.getElementById('customRangePicker').style.display = 'none';
+      
+      const btns = document.querySelectorAll('.tab-btn');
+      btns.forEach(b => {
+        b.classList.remove('active');
+        if (b.textContent.includes(days + '일') && b.id !== 'btnDurCustom') {
+          b.classList.add('active');
+        }
+      });
+      updateComparison();
+    }
+
+    // 커스텀 달력 선택기 활성화
+    function enableCustomRange() {
+      isCustomMode = true;
+      
+      const btns = document.querySelectorAll('.tab-btn');
+      btns.forEach(b => b.classList.remove('active'));
+      document.getElementById('btnDurCustom').classList.add('active');
+      
+      document.getElementById('customRangePicker').style.display = 'flex';
+      
+      const milestone = milestones.find(m => m.id === currentMilestoneId);
+      if (milestone) {
+        const dDay = new Date(milestone.date);
+        const startD = new Date(dDay);
+        startD.setDate(dDay.getDate() - 30);
+        const endD = new Date(dDay);
+        endD.setDate(dDay.getDate() + 29);
+        
+        document.getElementById('customStartDate').value = formatDate(startD);
+        document.getElementById('customEndDate').value = formatDate(endD);
+      }
+      
+      updateComparison();
+    }
+
+    function changeCustomRange() {
+      updateComparison();
+    }
+
+    function toggleForm() {
+      const content = document.getElementById('formContent');
+      const arrow = document.getElementById('collapseArrow');
+      content.classList.toggle('show');
+      if (content.classList.contains('show')) {
+        arrow.textContent = "접기 ▲";
+      } else {
+        arrow.textContent = "펼치기 ▼";
+      }
+    }
+
+    function addMilestone(e) {
+      e.preventDefault();
+      const label = document.getElementById('msLabel').value;
+      const date = document.getElementById('msDate').value;
+      
+      const checkedBoxes = document.querySelectorAll('input[name="categories"]:checked');
+      const target_categories = Array.from(checkedBoxes).map(cb => cb.value);
+
+      if (target_categories.length === 0) {
+        alert('대상 카테고리를 최소 1개 이상 선택해 주세요.');
+        return;
+      }
+
+      const newMs = {
+        id: 'ms_' + Date.now(),
+        label,
+        date,
+        target_categories
+      };
+
+      milestones.push(newMs);
+      saveMilestones();
+      loadMilestones();
+      selectMilestone(newMs.id);
+      
+      document.getElementById('milestoneForm').reset();
+      toggleForm();
+    }
+
+    function deleteMilestone(id) {
+      if (confirm('해당 개선 활동을 삭제하시겠습니까?')) {
+        milestones = milestones.filter(m => m.id !== id);
+        saveMilestones();
+        if (currentMilestoneId === id) {
+          currentMilestoneId = milestones.length > 0 ? milestones[0].id : null;
+        }
+        loadMilestones();
+        updateComparison();
+        updateMilestoneMiniTrackers();
+      }
+    }
+
+    // 전후 비교 연산 및 렌더링
+    function updateComparison() {
+      if (!activeStats || !currentMilestoneId) {
+        resetComparisonUI();
+        return;
+      }
+
+      const milestone = milestones.find(m => m.id === currentMilestoneId);
+      if (!milestone) {
+        resetComparisonUI();
+        return;
+      }
+
+      const analysis = calculateEffectData(milestone, currentDuration);
+      if (!analysis) {
+        resetComparisonUI('분석 데이터 범위 초과');
+        return;
+      }
+
+      document.getElementById('calcBeforeVal').textContent = analysis.beforeSum.toLocaleString() + '건';
+      document.getElementById('calcAfterVal').textContent = analysis.afterSum.toLocaleString() + '건';
+      
+      const pctEl = document.getElementById('calcPctVal');
+      pctEl.textContent = (analysis.pct > 0 ? '+' : '') + analysis.pct + '%';
+      if (parseFloat(analysis.pct) <= 0) {
+        pctEl.className = 'effect-kpi-card-value down';
+      } else {
+        pctEl.className = 'effect-kpi-card-value up';
+      }
+
+      document.getElementById('calcTrendChart').innerHTML = renderComparisonSVG(analysis.trend, currentDuration);
+    }
+
+    function resetComparisonUI(msg = '데이터 없음') {
+      document.getElementById('calcBeforeVal').textContent = '-';
+      document.getElementById('calcAfterVal').textContent = '-';
+      document.getElementById('calcPctVal').textContent = '-0.0%';
+      document.getElementById('calcPctVal').className = 'effect-kpi-card-value down';
+      document.getElementById('calcTrendChart').innerHTML = `<div style="text-align:center; padding:30px; font-size:12px; color:var(--text-muted);">${msg}</div>`;
+    }
+
+    // 날짜별 카테고리 카운트 획득
+    function getCountForDate(dailyCounts, dateStr, categories) {
+      const dayData = dailyCounts[dateStr];
+      if (!dayData) return 0;
+      
+      let count = 0;
+      categories.forEach(cat => {
+        if (dayData["소분류"] && dayData["소분류"][cat] !== undefined) {
+          count += dayData["소분류"][cat];
+        } else if (dayData["중분류"] && dayData["중분류"][cat] !== undefined) {
+          count += dayData["중분류"][cat];
+        }
+      });
+      return count;
+    }
+
+    // 전후 데이터 리스트 및 합산
+    function calculateEffectData(milestone, durationDays) {
+      if (!activeStats || !activeStats.daily_category_counts) return null;
+      
+      const dailyCounts = activeStats.daily_category_counts;
+      const dDay = new Date(milestone.date);
+      
+      let beforeSum = 0;
+      let afterSum = 0;
+      let trend = [];
+
+      if (isCustomMode) {
+        const startStr = document.getElementById('customStartDate').value;
+        const endStr = document.getElementById('customEndDate').value;
+        if (!startStr || !endStr) return null;
+        
+        const startDate = new Date(startStr);
+        const endDate = new Date(endStr);
+        
+        const diffTime = endDate - startDate;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        if (diffDays <= 0) return null;
+        
+        for (let i = 0; i < diffDays; i++) {
+          const targetDate = new Date(startDate);
+          targetDate.setDate(startDate.getDate() + i);
+          const dateStr = formatDate(targetDate);
+          const cnt = getCountForDate(dailyCounts, dateStr, milestone.target_categories);
+          
+          const dayOffset = Math.round((targetDate - dDay) / (1000 * 60 * 60 * 24));
+          if (targetDate < dDay) {
+            beforeSum += cnt;
+            trend.push({ date: dateStr, count: cnt, dayOffset: dayOffset });
+          } else {
+            afterSum += cnt;
+            trend.push({ date: dateStr, count: cnt, dayOffset: dayOffset });
+          }
+        }
+      } else {
+        // D-N ~ D-1
+        for (let i = durationDays; i >= 1; i--) {
+          const targetDate = new Date(dDay);
+          targetDate.setDate(dDay.getDate() - i);
+          const dateStr = formatDate(targetDate);
+          const cnt = getCountForDate(dailyCounts, dateStr, milestone.target_categories);
+          beforeSum += cnt;
+          trend.push({ date: dateStr, count: cnt, dayOffset: -i });
+        }
+
+        // D ~ D+N-1
+        for (let i = 0; i < durationDays; i++) {
+          const targetDate = new Date(dDay);
+          targetDate.setDate(dDay.getDate() + i);
+          const dateStr = formatDate(targetDate);
+          const cnt = getCountForDate(dailyCounts, dateStr, milestone.target_categories);
+          afterSum += cnt;
+          trend.push({ date: dateStr, count: cnt, dayOffset: i });
+        }
+      }
+
+      const totalCount = trend.reduce((sum, item) => sum + item.count, 0);
+      if (totalCount === 0) return null;
+
+      const pct = beforeSum > 0 ? (((afterSum - beforeSum) / beforeSum) * 100).toFixed(1) : 0.0;
+
+      return {
+        beforeSum,
+        afterSum,
+        pct,
+        trend
+      };
+    }
+
+    // SVG 전후 추이 차트 렌더링
+    function renderComparisonSVG(trendData, durationDays) {
+      const maxVal = Math.max(...trendData.map(t => t.count), 1);
+      const width = 500;
+      const height = 150;
+      const left = 35;
+      const right = 20;
+      const top = 20;
+      const bottom = 25;
+      const plotW = width - left - right;
+      const plotH = height - top - bottom;
+      
+      let points = [];
+      trendData.forEach((t, idx) => {
+        const x = left + (idx / (trendData.length - 1 || 1)) * plotW;
+        const y = top + plotH - (t.count / maxVal) * plotH;
+        points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+      });
+
+      const ddayIdx = trendData.findIndex(t => t.dayOffset === 0);
+      let ddayX = -1;
+      if (ddayIdx >= 0) {
+        ddayX = left + (ddayIdx / (trendData.length - 1 || 1)) * plotW;
+      }
+
+      let rows = [];
+
+      // 가로 보조선
+      for (let i = 0; i <= 3; i++) {
+        const y = top + (i / 3) * plotH;
+        const val = Math.round(maxVal - (i / 3) * maxVal);
+        rows.push(`<line x1="${left}" y1="${y}" x2="${width - right}" y2="${y}" stroke="#f1f5f9" stroke-width="1"/>`);
+        rows.push(`<text x="${left - 8}" y="${y + 4}" text-anchor="end" style="font-size: 8px; fill: #64748b; font-family: Pretendard;">${val}</text>`);
+      }
+
+      // D-Day 점선
+      if (ddayX >= 0) {
+        rows.push(`<line x1="${ddayX}" y1="${top}" x2="${ddayX}" y2="${top + plotH}" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,3"/>`);
+        rows.push(`<text x="${ddayX}" y="${top - 5}" text-anchor="middle" style="font-size: 8px; fill: #ef4444; font-weight: 800; font-family: Pretendard;">배포일 (D-Day)</text>`);
+      }
+
+      // 꺾은선
+      rows.push(`<polyline points="${points.join(' ')}" fill="none" stroke="#64748b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`);
+
+      // 마킹 포인트
+      const keyIndices = [0, ddayIdx, trendData.length - 1].filter(idx => idx >= 0 && idx < trendData.length);
+      const uniqueIndices = [...new Set(keyIndices)];
+      uniqueIndices.forEach(idx => {
+        const t = trendData[idx];
+        const x = left + (idx / (trendData.length - 1 || 1)) * plotW;
+        const y = top + plotH - (t.count / maxVal) * plotH;
+        
+        const color = idx === ddayIdx ? '#ef4444' : '#05c228';
+        rows.push(`<circle cx="${x}" cy="${y}" r="4" fill="#ffffff" stroke="${color}" stroke-width="2"/>`);
+        rows.push(`<text x="${x}" y="${y - 8}" text-anchor="middle" style="font-size: 8px; fill: ${color}; font-weight: 800; font-family: Pretendard;">${t.count}건</text>`);
+        
+        const labelDate = t.date.slice(5); // MM-DD
+        rows.push(`<text x="${x}" y="${top + plotH + 14}" text-anchor="middle" style="font-size: 8px; fill: #64748b; font-family: Pretendard;">${labelDate}</text>`);
+      });
+
+      return `<svg viewBox="0 0 ${width} ${height}" style="width:100%; height:auto; display:block;">${rows.join('')}</svg>`;
+    }
+
+    // 메인 상단 마일스톤 미니 트래커 렌더링
+    function updateMilestoneMiniTrackers() {
+      const container = document.getElementById('milestoneMiniTrackers');
+      container.innerHTML = '';
+
+      if (!activeStats) return;
+
+      milestones.slice(0, 3).forEach(m => {
+        const analysis = calculateEffectData(m, 30);
+        let pctVal = '-0.0%';
+        let styleClass = 'down';
+
+        if (analysis) {
+          pctVal = (analysis.pct > 0 ? '+' : '') + analysis.pct + '%';
+          styleClass = parseFloat(analysis.pct) <= 0 ? 'down' : 'up';
+        }
+
+        const card = document.createElement('div');
+        card.className = 'effect-kpi-card';
+        card.innerHTML = `
+          <span class="effect-kpi-card-label" style="font-size:10px;">${m.label.replace(' 배포', '').replace(' 오픈', '')}</span>
+          <span class="effect-kpi-card-value ${styleClass}" style="font-size:16px;">${pctVal}</span>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // 페이지 시작 시 작동
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
